@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.7/js/tether.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js" integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg==" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+	
+
+	<title>To-Do List</title>
+	<style type="text/css">
+		body
+		{
+			border:0;
+			margin:0;
+			padding:0;
+			background-image: linear-gradient(to right,#f6d365,#fda085);
+			font-family: "Poppins",sans-serif;
+			
+		}
+		form
+		{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 40px;
+			margin:25px;	
+		}
+		form input,form button
+		{
+			border:0;
+			
+			font-size: 2rem;
+			background-color: white;
+			height:40px;
+			padding: 5px;
+			
+		}
+		form button
+		{
+			color: #fda085;
+			background-color: white;
+			transition: all 0.3 ease;
+			position:relative;
+			padding-top: 0 !important;
+
+		}
+		form button:hover
+		{
+			color: white;
+			background-color: #fda085;
+		}
+
+		
+		h1
+		{
+			font-size: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color:white;
+			min-height: 200px;
+
+		}
+		.add-note
+		{
+			font-size: 17px;
+			width:350px;
+		}
+		.note-container
+		{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.note
+		{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin:0.5rem;
+			background-color: white;
+			width:350px;
+			font-size: 15px;
+			transition: all 0.5s ease;
+
+		}
+		.note-list
+		{
+			list-style: none;
+			max-width: 30%;
+
+		}
+		.icon
+		{
+			float:right;
+			width: 32px;
+			height: 32px;
+		}
+		.note li
+		{
+			width: 350px;
+			padding: 0.3rem;		
+		}
+		.note button
+		{
+			
+			float: right;
+			height: 32px;
+			width: 32px;
+			border:none;
+		}
+		.fa-check
+		{
+			background-color: #02BDA3;
+			color: white;
+		}
+		.check
+		{
+			background-color: #02BDA3;
+		}
+		.fa-trash
+		{
+			background-color: #F57542;
+			color: white;
+		}
+		.trash
+		{
+			background-color: #F57542;
+		}
+		.newdecor
+		{
+			text-decoration:line-through;
+			opacity:0.5;
+
+		}
+		.fall
+		{
+			transform: translateY(8rem) rotateZ(20deg);
+			opacity:0;
+			border:0;
+			box-shadow: none;
+			outline: none;
+			appearance:none;
+		}
+		.filter
+		{
+			padding:7px;
+			margin-left: 10px;
+			color:#ff6f47;
+		}
+
+	</style>
+
+</head>
+<body>
+	
+
+
+	<h1>Ohm's To-Do list</h1>
+	<form>
+		<input type="text" class="add-note" id="inp" placeholder="Enter your note here...">
+		<button class="add"><i class="fas fa-plus-square" ></i></button>
+		<div class="select">
+			<select name="notes" class="filter">
+				<option value="all">All</option>
+				<option value="completed">Completed</option>
+				<option value="uncompleted">Uncompleted</option>
+			</select>
+		</div>
+	</form>
+	<div class="note-container">
+		<ul class="note-list" id="note-list">
+		</ul>
+	</div>
+
+	
+
+
+
+
+
+	<script type="text/javascript">
+			
+		$(".add").click(function()
+		{
+			event.preventDefault();
+			var txt= $(".add-note").val();	
+			txt3 = document.createElement("div");  
+			txt3.setAttribute("class", "note toggle");
+  			txt3.innerHTML="<li>"+txt+"</li><button class='check'><i class='fas fa-check'></i></button> <button  class='trash'><i class='fas fa-trash'></i></button>";
+			$(".note-list").append(txt3);
+			$(".add-note").val("");
+		});
+
+		$(document).on('click','.trash',function()
+		{
+			var name=$(this).parent();
+			name.toggleClass("fall");
+			name.on('transitionend webkitTransitionEnd oTransitionEnd', function () 
+			{
+    			name.remove();
+			});
+		});
+		
+		$(document).on('click','.check',function()
+		{
+			$(this).parent().toggleClass("newdecor");
+			$(this).parent().toggleClass("toggle");
+		});
+		
+		$('.select').change(function()
+
+		{ 
+			var value = $(this).find("option:selected").val();
+			if(value=="all")
+			{
+				$( "#note-list" ).children( ".newdecor" ).css("display","flex");
+				$( "#note-list" ).children( ".toggle" ).css("display","flex");
+			}
+			if(value == "uncompleted")
+			{
+				$( "#note-list" ).children( ".newdecor" ).css("display","none");
+				$( "#note-list" ).children( ".toggle" ).css("display","flex");
+			}
+			if(value == "completed")
+			{
+				$( "#note-list" ).children( ".toggle" ).css("display","none");
+				$( "#note-list" ).children( ".newdecor" ).css("display","flex");
+			}
+		});
+	</script>
+</body>
+</html>
